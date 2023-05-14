@@ -1,14 +1,50 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter } from "react-router-dom";
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+// Get the API URL from environment variable
+const apiUrl = process.env.REACT_APP_API_URL;
+
+// Create a HTTP link to the GraphQL server
+const httpLink = createHttpLink({
+  uri: apiUrl,
+});
+
+// Create an authentication link to add the token to the header of each request
+const authLink = setContext((_, { headers }) => {
+  const token = process.env.REACT_APP_TOKEN;
+  console.log("Token:", token); // Debugging line to print token value to the console
+  console.log("uri:", apiUrl); // Debugging line to print API URL to the console
+  return {
+    headers: {
+      authorization: token ? token : "",
+    },
+  };
+});
+
+// Create the Apollo client with the authentication link and HTTP link
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
+
+// Render the app inside a React root element
+const rootElement = document.getElementById("root");
+ReactDOM.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    {/* Wrap the app in the ApolloProvider to inject the client instance */}
+    <ApolloProvider client={client}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ApolloProvider>
+  </React.StrictMode>,
+  rootElement
 );
 
 // If you want to start measuring performance in your app, pass a function
