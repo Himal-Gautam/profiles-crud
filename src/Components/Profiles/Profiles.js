@@ -107,6 +107,7 @@ function Profiles() {
               variant="outlined"
               startIcon={<PersonAddAlt1Icon />}
               component={Link}
+              color="default"
               to="/profile/add"
               sx={
                 {
