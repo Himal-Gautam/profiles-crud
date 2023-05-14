@@ -11,7 +11,7 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 
 import Profiles from "./Components/Profiles/Profiles";
-import Add_EditProfile from "./Components/Profiles/Add_EditProfile";
+import AddEditProfile from "./Components/Profiles/AddEditProfile";
 
 // Define the light and dark themes
 const lightTheme = createTheme({
@@ -78,10 +78,10 @@ function App() {
         {/* Render the Profiles component for /talent/my-talent */}
         <Route path="talent/my-talent" element={<Profiles />} />
 
-        {/* Render the Add_EditProfile component for paths starting with /talent */}
+        {/* Render the AddEditProfile component for paths starting with /talent */}
         <Route path="talent/*">
-          <Route path="add" element={<Add_EditProfile mode="add" />} />
-          <Route path="edit/:id" element={<Add_EditProfile mode="edit" />} />
+          <Route path="add" element={<AddEditProfile mode="add" />} />
+          <Route path="edit/:id" element={<AddEditProfile mode="edit" />} />
         </Route>
 
         {/* Add a catch-all route in case the user navigates to a non-existent path */}

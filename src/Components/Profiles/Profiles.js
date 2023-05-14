@@ -8,7 +8,6 @@ import ViewColumnIcon from "@mui/icons-material/ViewColumn";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_PROFILES } from "../../GraphQL/queries";
@@ -60,7 +59,7 @@ function Profiles() {
   // and refetches the data from the server
   useEffect(() => {
     refetch();
-  }, [page, rows, view]);
+  }, [page, rows, view, refetch]);
   // }, [page, rows, view, searchString]);
 
   // const debouncedSearch = debounce((searchString) => {
