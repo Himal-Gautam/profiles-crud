@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Box,
@@ -8,7 +8,6 @@ import {
   Grid,
   IconButton,
   Typography,
-  Container,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import VerifiedRoundedIcon from "@mui/icons-material/VerifiedRounded";

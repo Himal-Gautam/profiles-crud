@@ -21,7 +21,6 @@ import {
   UPDATE_PROFILE,
 } from "../../GraphQL/queries";
 import CloseIcon from "@mui/icons-material/Close";
-import ShowSnackBar from "../ResponseSnackBar/ShowSnackBar";
 
 function AddEditProfile({ mode }) {
   const { id } = useParams();
@@ -89,7 +88,7 @@ function AddEditProfile({ mode }) {
 
   const [
     getProfileById,
-    { loading: profileLoading, error: profileError, data: profileData },
+    { data: profileData },
   ] = useLazyQuery(GET_PROFILE_BY_ID);
 
   useEffect(() => {
