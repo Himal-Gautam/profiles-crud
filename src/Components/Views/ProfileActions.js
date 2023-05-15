@@ -106,9 +106,9 @@ function ProfileActions({ anchorEl, handleMenuClose, id, refetch }) {
             <IconButton
               aria-label="delete"
               color="default"
-              onClick={()=>{
+              onClick={() => {
                 handleMenuClose();
-                handleModalClose()
+                handleModalClose();
               }}
             >
               <CloseIcon fontSize="large" />

@@ -23,24 +23,28 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 
 function AddEditProfile({ mode }) {
+  // Destructure id from the URL params using useParams hook
   const { id } = useParams();
-  const navigate = useNavigate();
-  const [imageUrl, setImageUrl] = useState(mode === "add" ? "" : "loading...");
-  const [firstName, setFirstName] = useState(
-    mode === "add" ? "" : "loading..."
-  );
-  const [lastName, setLastName] = useState(mode === "add" ? "" : "loading...");
-  const [email, setEmail] = useState(mode === "add" ? "" : "loading...");
-  const [description, setDescription] = useState(
-    mode === "add" ? "" : "loading..."
-  );
-  const [isVerified, setIsVerified] = useState(false);
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  const {setMessage, setSeverity, setOpenSnackBar} = useContext(SnackBarContext)
-  // const [message, setMessage] = useState("");
-  // const [severity, setSeverity] = useState("");
-  // const [openSnackBar, setOpenSnackBar] = useState(false);
 
+  // Navigate to a different route/page using useNavigate hook from React Router DOM
+  const navigate = useNavigate();
+
+  // State variables for user profile data
+  const [imageUrl, setImageUrl] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [description, setDescription] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
+
+  // Determine if the device being used is a mobile device using useMediaQuery hook from Material-UI
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
+  // Context variables for showing and hiding snack bar notifications
+  const { setMessage, setSeverity, setOpenSnackBar } =
+    useContext(SnackBarContext);
+
+  // Function for showing the snack bar notification and navigating to a different route/page
   function handleOpenSnackBar(message, severity) {
     setMessage(message);
     setSeverity(severity);
@@ -48,6 +52,7 @@ function AddEditProfile({ mode }) {
     navigate("/talent/my-talent");
   }
 
+  // GraphQL mutation for creating a new user profile
   const [createProfile] = useMutation(CREATE_PROFILE, {
     variables: {
       firstName,
@@ -57,16 +62,19 @@ function AddEditProfile({ mode }) {
       imageUrl,
       description,
     },
+    // Callback function that is executed when the mutation is completed successfully
     onCompleted: ({ data = {} }) => {
       handleOpenSnackBar("Profile has been updated", "success");
     },
+    // Callback function that is executed when there is an error during the mutation
     onError: (error) => {
-      console.log(error.extensions)
-      console.log(error.message)
+      console.log(error.extensions);
+      console.log(error.message);
       handleOpenSnackBar(error.message, "error");
     },
   });
 
+  // GraphQL mutation for updating an existing user profile
   const [updateProfile] = useMutation(UPDATE_PROFILE, {
     variables: {
       updateProfileId: id,
@@ -78,25 +86,30 @@ function AddEditProfile({ mode }) {
       description,
       is_candidate: false,
     },
+    // Callback function that is executed when the mutation is completed successfully
     onCompleted: () => {
       handleOpenSnackBar("Profile has been updated", "success");
     },
+    // Callback function that is executed when there is an error during the mutation
     onError: (error) => {
       handleOpenSnackBar(error.message, "error");
     },
   });
 
+  // GraphQL query for getting an existing user profile by ID
   const [
     getProfileById,
-    { data: profileData },
+    { loading: profileLoading, data: profileData },
   ] = useLazyQuery(GET_PROFILE_BY_ID);
 
+  // Use an effect hook to get the user profile data when in edit mode and an ID is provided
   useEffect(() => {
     if (mode === "edit" && id) {
       getProfileById({ variables: { getProfileByIdId: id } });
     }
   }, [getProfileById, id, mode]);
 
+  // Use an effect hook to update the state variables with the user profile data fetched from the API
   useEffect(() => {
     if (profileData && profileData.getProfileById) {
       setFirstName(profileData.getProfileById.first_name);
@@ -108,6 +121,7 @@ function AddEditProfile({ mode }) {
     }
   }, [profileData]);
 
+  // Function to handle the button click event for saving/updating the user profile
   const handleButtonClick = () => {
     if (mode === "add") {
       console.log({
@@ -151,7 +165,7 @@ function AddEditProfile({ mode }) {
                 </Typography>
                 <TextField
                   onChange={(e) => setImageUrl(e.target.value)}
-                  value={imageUrl}
+                  value={profileLoading ? "loading..." : imageUrl}
                   variant="outlined"
                   fullWidth
                 />
@@ -162,7 +176,7 @@ function AddEditProfile({ mode }) {
                 </Typography>
                 <TextField
                   onChange={(e) => setFirstName(e.target.value)}
-                  value={firstName}
+                  value={profileLoading ? "loading..." : firstName}
                   variant="outlined"
                   fullWidth
                 />
@@ -173,7 +187,7 @@ function AddEditProfile({ mode }) {
                 </Typography>
                 <TextField
                   onChange={(e) => setLastName(e.target.value)}
-                  value={lastName}
+                  value={profileLoading ? "loading..." : lastName}
                   variant="outlined"
                   fullWidth
                 />
@@ -184,7 +198,7 @@ function AddEditProfile({ mode }) {
                 </Typography>
                 <TextField
                   onChange={(e) => setEmail(e.target.value)}
-                  value={email}
+                  value={profileLoading ? "loading..." : email}
                   variant="outlined"
                   fullWidth
                 />
@@ -195,7 +209,7 @@ function AddEditProfile({ mode }) {
                 </Typography>
                 <TextField
                   onChange={(e) => setDescription(e.target.value)}
-                  value={description}
+                  value={profileLoading ? "loading..." : description}
                   variant="outlined"
                   multiline
                   rows={4}
