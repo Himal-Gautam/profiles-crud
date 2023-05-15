@@ -1,19 +1,22 @@
-import React, {  useState } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import TablePagination from "@mui/material/TablePagination";
-import SettingsIcon from "@mui/icons-material/Settings";
-import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
-import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import VerifiedRoundedIcon from "@mui/icons-material/VerifiedRounded";
-import ProfileActions from "./ProfileActions";
-import { IconButton } from "@mui/material";
+import React, { useState } from 'react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TablePagination,
+  Box,
+  Avatar,
+  IconButton,
+} from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
+import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
+import VerifiedRoundedIcon from '@mui/icons-material/VerifiedRounded';
+import ProfileActions from './ProfileActions';
+
 function GridView({ data, setPage, setRows, page, rows, refetch }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [id, setId] = useState(null);

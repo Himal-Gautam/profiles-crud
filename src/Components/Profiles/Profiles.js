@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { useMediaQuery } from "@mui/material";
+import React, { useState, useEffect} from "react";
+import {
+  useMediaQuery,
+  Container,
+  TextField,
+  Button,
+} from "@mui/material";
 import CardView from "../Views/CardView";
 import GridView from "../Views/GridView";
-import { Container, TextField } from "@mui/material";
 import ViewListRoundedIcon from "@mui/icons-material/ViewListRounded";
 import ViewColumnIcon from "@mui/icons-material/ViewColumn";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import Button from "@mui/material/Button";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import LinearProgress from "@mui/material/LinearProgress";
+import debounce from "lodash.debounce";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_PROFILES } from "../../GraphQL/queries";
-import LinearProgress from "@mui/material/LinearProgress";
-import { Link } from "react-router-dom";
-import debounce from 'lodash.debounce';
+import {Link } from 'react-router-dom'
+
 
 function Profiles() {
   // Set up state variables using the useState hook
@@ -55,22 +59,14 @@ function Profiles() {
     view === "card" ? setRows(16) : setRows(5);
   }, [view]);
 
-  // This effect is triggered whenever any of the dependencies change,
-  // and refetches the data from the server
-  useEffect(() => {
-    refetch();
-  }, [page, rows, view, refetch]);
-  // }, [page, rows, view, searchString]);
-
   // const debouncedSearch = debounce((searchString) => {
-  const debouncedSearch = debounce(() => {
-    refetch()
-    // setSearchString(searchString);
+  const debouncedSearch = debounce((e) => {
+    setSearchString(e.target.value);
   }, 500);
 
   return (
     <Container sx={{ p: 10, pt: 5 }}>
-     {/* The search bar and buttons for creating a new profile and switching between views */}
+      {/* The search bar and buttons for creating a new profile and switching between views */}
       <Container
         sx={{
           display: "flex",
@@ -85,13 +81,8 @@ function Profiles() {
           id="outlined-start-adornment"
           placeholder={"Search"}
           sx={{ flexGrow: 1, height: "100%" }}
-          onChange={(e) => {
-            setSearchString(e.target.value)
-          }}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              debouncedSearch();
-            }
+            debouncedSearch(e);
           }}
         />
         {isMobile && (
@@ -106,18 +97,9 @@ function Profiles() {
             <Button
               variant="outlined"
               startIcon={<PersonAddAlt1Icon />}
-              component={Link}
               color="default"
-              to="/profile/add"
-              sx={
-                {
-                  // whiteSpace: "nowrap",
-                  // flexGrow: 1,
-                  // mt: 2,
-                  // width: "100%",
-                  // justifyContent: "flex-end",
-                }
-              }
+              component={Link}
+              to="/talent/add"
             >
               Create Profile
             </Button>
@@ -128,12 +110,14 @@ function Profiles() {
             variant="outlined"
             startIcon={<PersonAddAlt1Icon />}
             component={Link}
-            to="/profile/add"
+            to="/talent/add"
             sx={{ whiteSpace: "nowrap", flexShrink: 0, height: "100%" }}
           >
             Create Profile
           </Button>
         )}
+        
+
         {!isMobile && (
           <ToggleButtonGroup
             value={view}
@@ -158,9 +142,14 @@ function Profiles() {
           </p>
         )}
         {error && <p>Something Went Wrong</p>}
-        {data &&
-          (view === "card" ? (
-            <CardView data={data} refetch={refetch} />
+        {data && data.getAllProfiles.profiles.length > 0 ? (
+          view === "card" ? (
+            // <CardView data={data} refetch={refetch} />
+            <CardView data={data}
+            setPage={setPage}
+            page={page}
+            loading={loading}
+            refetch={refetch} />
           ) : (
             <GridView
               data={data}
@@ -170,8 +159,12 @@ function Profiles() {
               rows={rows}
               refetch={refetch}
             />
-          ))}
+          )
+        ) : (
+          !loading && <p>0 Profiles Avilable</p>
+        )}
       </Container>
+      
     </Container>
   );
 }

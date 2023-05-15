@@ -1,12 +1,11 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-
+import { createRoot } from 'react-dom/client';
 // Get the API URL from environment variable
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -34,8 +33,9 @@ const client = new ApolloClient({
 });
 
 // Render the app inside a React root element
-const rootElement = document.getElementById("root");
-ReactDOM.render(
+const container = document.getElementById("root");
+const rootElement = createRoot(container);
+rootElement.render(
   <React.StrictMode>
     {/* Wrap the app in the ApolloProvider to inject the client instance */}
     <ApolloProvider client={client}>
@@ -43,8 +43,7 @@ ReactDOM.render(
         <App />
       </BrowserRouter>
     </ApolloProvider>
-  </React.StrictMode>,
-  rootElement
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
