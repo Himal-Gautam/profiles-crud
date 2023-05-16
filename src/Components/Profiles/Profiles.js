@@ -75,7 +75,7 @@ function Profiles() {
   // Handle error and show snack bar
   useEffect(() => {
     if (error) {
-      setMessage(error.message);
+      setMessage(error.message + "Please check CORS (turn it on)");
       setSeverity("error");
       setOpenSnackBar(true);
     }
