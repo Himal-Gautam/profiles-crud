@@ -62,7 +62,7 @@ function Profiles() {
       setSeverity("error");
       setOpenSnackBar(true);
     }
-  }, [error]);
+  }, [error, setMessage, setSeverity, setOpenSnackBar]);
   
   // This effect is triggered whenever the view changes,
   // and sets the page and rows variables based on the new view
