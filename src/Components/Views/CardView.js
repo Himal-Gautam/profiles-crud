@@ -35,7 +35,7 @@ function CardView({ data, refetch, isMobile }) {
       {data.getAllProfiles.profiles.map((profile) => (
         <Grid item xs={12} md={6} lg={3} key={profile.id}>
           <Card sx={{ maxWidth: "100%", flexGrow: 1, pt: 2 }}>
-            <Container sx={{ display: "flex" }}>
+            <Container sx={{ display: "flex", position: "relative" }}>
               <Box
                 sx={{
                   display: "flex",
@@ -61,7 +61,7 @@ function CardView({ data, refetch, isMobile }) {
                       flexWrap: "nowrap",
                       gap: 1,
                       alignItems: "center",
-                      maxWidth: "calc(100% - 36px)", // Adjusted maxWidth to account for the width of the verified icon
+                      maxWidth: "calc(90%)", // Adjusted maxWidth to account for the width of the verified icon and button
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                     }}
@@ -70,7 +70,7 @@ function CardView({ data, refetch, isMobile }) {
                       variant="subtitle1"
                       noWrap
                       sx={{
-                        maxWidth: "70%", // Reduced maxWidth for the name
+                        maxWidth: "90%", // Reduced maxWidth for the name
                       }}
                     >
                       {profile.first_name} {profile.last_name}
@@ -84,7 +84,7 @@ function CardView({ data, refetch, isMobile }) {
                     sx={{
                       display: "flex",
                       flexWrap: "nowrap",
-                      maxWidth: "calc(100% - 36px)", // Adjusted maxWidth to account for the width of the email icon
+                      maxWidth: "calc(100% - 36px)", // Adjusted maxWidth to account for the width of the email icon and button
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                     }}
@@ -94,15 +94,19 @@ function CardView({ data, refetch, isMobile }) {
                     </Typography>
                   </Box>
                 </Box>
-              </Box>
-
-              <Box sx={{ marginLeft: "auto" }}>
-                <IconButton
-                  aria-label="settings"
-                  onClick={(event) => handleMenuOpen(event, profile.id)}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    right: 0,
+                  }}
                 >
-                  <MoreVertIcon />
-                </IconButton>
+                  <IconButton
+                    aria-label="settings"
+                    onClick={(event) => handleMenuOpen(event, profile.id)}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                </Box>
               </Box>
             </Container>
             {/* card content with description */}
