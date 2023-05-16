@@ -28,7 +28,7 @@ function Profiles() {
   const [searchString, setSearchString] = useState(""); // searchString: the text in the search bar
   const [page, setPage] = React.useState(0); // page: the current page of profiles being displayed
   const [rows, setRows] = React.useState(16); // rows: the number of rows of profiles being displayed
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md")); // isMobile: a boolean that is true if the screen width is less than or equal to the "sm" breakpoint
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm")); // isMobile: a boolean that is true if the screen width is less than or equal to the "sm" breakpoint
   const [key, setKey] = useState("email"); // State for selected field
   const [sort, setSort] = useState("asc"); // State for selected order
   const { setMessage, setSeverity, setOpenSnackBar } =
@@ -186,7 +186,7 @@ function Profiles() {
           onChange={(event) => {
             setKey(event.target.value);
           }}
-          sx={{width:1/6}}
+          sx={{width:isMobile ? 1/3 : 1/6}}
         >
           <MenuItem value="email">Email</MenuItem>
           <MenuItem value="isVerified">Is Verified</MenuItem>
@@ -197,7 +197,7 @@ function Profiles() {
           onChange={(event) => {
             setSort(event.target.value);
           }}
-          sx={{width:1/6}}
+          sx={{width:isMobile ? 1/3 : 1/6}}
 
         >
           <MenuItem value="asc">Ascending</MenuItem>
@@ -220,6 +220,7 @@ function Profiles() {
               page={page}
               loading={loading}
               refetch={refetch}
+              isMobile={isMobile}
             />
           ) : (
             <GridView

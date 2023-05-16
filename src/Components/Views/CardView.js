@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Container,
   Grid,
   IconButton,
   Typography,
@@ -13,86 +14,98 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import VerifiedRoundedIcon from "@mui/icons-material/VerifiedRounded";
 import ProfileActions from "./ProfileActions";
 
-function CardView({ data, refetch }) {
+function CardView({ data, refetch, isMobile }) {
   // state to store the anchor element for the menu
-const [anchorEl, setAnchorEl] = useState(null);
-const [id, setId] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [id, setId] = useState(null);
 
-// function to handle menu open
-const handleMenuOpen = (event, id) => {
-  setAnchorEl(event.currentTarget);
-  setId(id);
-};
+  // function to handle menu open
+  const handleMenuOpen = (event, id) => {
+    setAnchorEl(event.currentTarget);
+    setId(id);
+  };
 
-// function to handle menu close
-const handleMenuClose = () => {
-  setAnchorEl(null);
-};
+  // function to handle menu close
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Grid container spacing={2}>
       {/* map over the profiles and create cards for each */}
       {data.getAllProfiles.profiles.map((profile) => (
         <Grid item xs={12} md={6} lg={3} key={profile.id}>
-          <Card sx={{ maxWidth: 345, flexGrow: 1 }}>
-            {/* card header with avatar, title, subheader, and menu icon */}
-            <CardHeader
-              avatar={
-                <Avatar
-                  src={profile.image_url}
-                  alt={`${profile.first_name}'s Profile Image`}
-                  sx={{ width: 50, height: 50 }}
-                />
-              }
-              action={
-                <IconButton
-                  aria-label="settings"
-                  onClick={(event) => handleMenuOpen(event, profile.id)}
-                  sx={{ position: "stickey" }}
-                >
-                  <MoreVertIcon />
-                </IconButton>
-              }
-              title={
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexWrap: "nowrap",
-                    gap: 1,
-                    alignItems: "center",
-                    maxWidth: "60%",
-                  }}
-                >
-                  <Typography
-                    variant="subtitle1"
-                    noWrap
+          <Card sx={{ maxWidth: "100%", flexGrow: 1, pt: 2 }}>
+            <Container sx={{ display: "flex" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  gap: 2,
+                  width: "90%",
+                  p: 0,
+                }}
+              >
+                <Box sx={{ flex: "none" }}>
+                  <Avatar
+                    src={profile.image_url}
+                    alt={`${profile.first_name}'s Profile Image`}
+                    sx={{ width: 50, height: 50 }}
+                  />
+                </Box>
+                <Box sx={{ flex: "auto" }}>
+                  <Box
                     sx={{
-                      maxWidth: "60%",
+                      display: "flex",
+                      flexWrap: "nowrap",
+                      gap: 1,
+                      alignItems: "center",
+                      maxWidth: "calc(100% - 36px)", // Adjusted maxWidth to account for the width of the verified icon
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                     }}
                   >
-                    {profile.first_name} {profile.last_name}
-                  </Typography>
-                  {profile.is_verified && (
-                    <VerifiedRoundedIcon color="primary" fontSize="small" />
-                  )}
+                    <Typography
+                      variant="subtitle1"
+                      noWrap
+                      sx={{
+                        maxWidth: "70%", // Reduced maxWidth for the name
+                      }}
+                    >
+                      {profile.first_name} {profile.last_name}
+                    </Typography>
+                    {profile.is_verified && (
+                      <VerifiedRoundedIcon color="primary" fontSize="small" />
+                    )}
+                  </Box>
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexWrap: "nowrap",
+                      maxWidth: "calc(100% - 36px)", // Adjusted maxWidth to account for the width of the email icon
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    <Typography variant="body2" noWrap>
+                      {profile.email}
+                    </Typography>
+                  </Box>
                 </Box>
-              }
-              subheader={
-                <Box
-                  sx={{
-                    maxWidth: "60%",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
+              </Box>
+
+              <Box sx={{ marginLeft: "auto" }}>
+                <IconButton
+                  aria-label="settings"
+                  onClick={(event) => handleMenuOpen(event, profile.id)}
                 >
-                  <Typography variant="body2" noWrap>
-                    {profile.email}
-                  </Typography>
-                </Box>
-              }
-            />
+                  <MoreVertIcon />
+                </IconButton>
+              </Box>
+            </Container>
             {/* card content with description */}
             <CardContent>
               <Typography variant="body2" color="text.secondary">
@@ -131,7 +144,7 @@ export default CardView;
 //   useEffect(() => {
 //     // Detect when user reaches top or bottom of container element
 //     window.addEventListener("scroll", handleScroll);
-  
+
 //     return () => {
 //       window.removeEventListener("scroll", handleScroll);
 //     };
