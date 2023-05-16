@@ -1,4 +1,5 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect, useContext} from "react";
+import { SnackBarContext } from "../../App";
 import {
   useMediaQuery,
   Container,
@@ -26,7 +27,9 @@ function Profiles() {
   const [page, setPage] = React.useState(0); // page: the current page of profiles being displayed
   const [rows, setRows] = React.useState(16); // rows: the number of rows of profiles being displayed
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm")); // isMobile: a boolean that is true if the screen width is less than or equal to the "sm" breakpoint
-
+  const { setMessage, setSeverity, setOpenSnackBar } =
+    useContext(SnackBarContext);
+  
   // This function is called when the view is changed
   const handleViewChange = (event, nextView) => {
     if (nextView) {
@@ -52,6 +55,15 @@ function Profiles() {
     },
   });
 
+  // Handle error and show snack bar
+  useEffect(() => {
+    if (error) {
+      setMessage(error.message);
+      setSeverity("error");
+      setOpenSnackBar(true);
+    }
+  }, [error]);
+  
   // This effect is triggered whenever the view changes,
   // and sets the page and rows variables based on the new view
   useEffect(() => {
