@@ -103,13 +103,13 @@ function App() {
             {/* Add a catch-all route in case the user navigates to a non-existent path */}
             {/* <Route path="*" element={<NoPage />} /> */}
           </Routes>
-        </ThemeProvider>
         <ShowSnackBar
           severity={severity}
           message={message}
           openSnackBar={openSnackBar}
           setOpenSnackBar={setOpenSnackBar}
         />
+        </ThemeProvider>
       </SnackBarContext.Provider>
     </>
   );

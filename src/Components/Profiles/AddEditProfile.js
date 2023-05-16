@@ -97,10 +97,8 @@ function AddEditProfile({ mode }) {
   });
 
   // GraphQL query for getting an existing user profile by ID
-  const [
-    getProfileById,
-    { loading: profileLoading, data: profileData },
-  ] = useLazyQuery(GET_PROFILE_BY_ID);
+  const [getProfileById, { loading: profileLoading, data: profileData }] =
+    useLazyQuery(GET_PROFILE_BY_ID);
 
   // Use an effect hook to get the user profile data when in edit mode and an ID is provided
   useEffect(() => {
@@ -120,24 +118,6 @@ function AddEditProfile({ mode }) {
       setDescription(profileData.getProfileById.description);
     }
   }, [profileData]);
-
-  // Function to handle the button click event for saving/updating the user profile
-  const handleButtonClick = () => {
-    if (mode === "add") {
-      console.log({
-        firstName,
-        lastName,
-        email,
-        isVerified,
-        imageUrl,
-        description,
-        is_candidate: false,
-      });
-      createProfile();
-    } else {
-      updateProfile();
-    }
-  };
 
   return (
     <>
@@ -248,7 +228,7 @@ function AddEditProfile({ mode }) {
             <Button
               variant="contained"
               color="primary"
-              onClick={handleButtonClick}
+              onClick={mode === "add" ? createProfile : updateProfile}
             >
               {mode === "add" ? "Create" : "Update"} Profile
             </Button>

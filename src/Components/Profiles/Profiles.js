@@ -1,24 +1,26 @@
-import React, { useState, useEffect, useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { SnackBarContext } from "../../App";
 import {
   useMediaQuery,
   Container,
+  Select,
+  MenuItem,
   TextField,
   Button,
+  ToggleButton,
+  Typography,
 } from "@mui/material";
 import CardView from "../Views/CardView";
 import GridView from "../Views/GridView";
 import ViewListRoundedIcon from "@mui/icons-material/ViewListRounded";
 import ViewColumnIcon from "@mui/icons-material/ViewColumn";
-import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import LinearProgress from "@mui/material/LinearProgress";
 import debounce from "lodash.debounce";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_PROFILES } from "../../GraphQL/queries";
-import {Link } from 'react-router-dom'
-
+import { Link } from "react-router-dom";
 
 function Profiles() {
   // Set up state variables using the useState hook
@@ -26,10 +28,12 @@ function Profiles() {
   const [searchString, setSearchString] = useState(""); // searchString: the text in the search bar
   const [page, setPage] = React.useState(0); // page: the current page of profiles being displayed
   const [rows, setRows] = React.useState(16); // rows: the number of rows of profiles being displayed
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm")); // isMobile: a boolean that is true if the screen width is less than or equal to the "sm" breakpoint
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md")); // isMobile: a boolean that is true if the screen width is less than or equal to the "sm" breakpoint
+  const [key, setKey] = useState("email"); // State for selected field
+  const [sort, setSort] = useState("asc"); // State for selected order
   const { setMessage, setSeverity, setOpenSnackBar } =
     useContext(SnackBarContext);
-  
+
   // This function is called when the view is changed
   const handleViewChange = (event, nextView) => {
     if (nextView) {
@@ -46,14 +50,27 @@ function Profiles() {
   const { loading, error, data, refetch } = useQuery(GET_ALL_PROFILES, {
     variables: {
       orderBy: {
-        key: "first_name",
-        sort: "asc",
+        key,
+        sort,
       },
       rows,
       page,
       searchString,
     },
   });
+
+  // temp
+  useEffect(() => {
+   loading && console.log({
+    orderBy: {
+      key,
+      sort,
+    },
+    rows,
+    page,
+    searchString,
+  });
+  }, [loading, key, sort]);
 
   // Handle error and show snack bar
   useEffect(() => {
@@ -63,13 +80,13 @@ function Profiles() {
       setOpenSnackBar(true);
     }
   }, [error, setMessage, setSeverity, setOpenSnackBar]);
-  
+
   // This effect is triggered whenever the view changes,
   // and sets the page and rows variables based on the new view
   useEffect(() => {
     setPage(0);
     view === "card" ? setRows(16) : setRows(5);
-  }, [view]);
+  }, [view, key, sort]);
 
   // const debouncedSearch = debounce((searchString) => {
   const debouncedSearch = debounce((e) => {
@@ -77,7 +94,7 @@ function Profiles() {
   }, 500);
 
   return (
-    <Container sx={{ p: 10, pt: 5 }}>
+    <Container sx={{ p: 5 }}>
       {/* The search bar and buttons for creating a new profile and switching between views */}
       <Container
         sx={{
@@ -109,9 +126,17 @@ function Profiles() {
             <Button
               variant="outlined"
               startIcon={<PersonAddAlt1Icon />}
-              color="default"
               component={Link}
-              to="/talent/add"
+              to="/profile/add"
+              sx={
+                {
+                  // whiteSpace: "nowrap",
+                  // flexGrow: 1,
+                  // mt: 2,
+                  // width: "100%",
+                  // justifyContent: "flex-end",
+                }
+              }
             >
               Create Profile
             </Button>
@@ -122,14 +147,12 @@ function Profiles() {
             variant="outlined"
             startIcon={<PersonAddAlt1Icon />}
             component={Link}
-            to="/talent/add"
+            to="/profile/add"
             sx={{ whiteSpace: "nowrap", flexShrink: 0, height: "100%" }}
           >
             Create Profile
           </Button>
         )}
-        
-
         {!isMobile && (
           <ToggleButtonGroup
             value={view}
@@ -147,6 +170,40 @@ function Profiles() {
           </ToggleButtonGroup>
         )}
       </Container>
+      <Container
+        sx={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "flex-end",
+          mb: 2,
+          gap: 2,
+          alignItems: "center",
+        }}
+      >
+        <Typography>Sort :</Typography>
+        <Select
+          value={key}
+          onChange={(event) => {
+            setKey(event.target.value);
+          }}
+          sx={{width:1/6}}
+        >
+          <MenuItem value="email">Email</MenuItem>
+          <MenuItem value="isVerified">Is Verified</MenuItem>
+        </Select>
+
+        <Select
+          value={sort}
+          onChange={(event) => {
+            setSort(event.target.value);
+          }}
+          sx={{width:1/6}}
+
+        >
+          <MenuItem value="asc">Ascending</MenuItem>
+          <MenuItem value="desc">Descending</MenuItem>
+        </Select>
+      </Container>
       <Container>
         {loading && (
           <p s={{ alignItems: "center" }}>
@@ -157,11 +214,13 @@ function Profiles() {
         {data && data.getAllProfiles.profiles.length > 0 ? (
           view === "card" ? (
             // <CardView data={data} refetch={refetch} />
-            <CardView data={data}
-            setPage={setPage}
-            page={page}
-            loading={loading}
-            refetch={refetch} />
+            <CardView
+              data={data}
+              setPage={setPage}
+              page={page}
+              loading={loading}
+              refetch={refetch}
+            />
           ) : (
             <GridView
               data={data}
@@ -176,7 +235,6 @@ function Profiles() {
           !loading && <p>0 Profiles Avilable</p>
         )}
       </Container>
-      
     </Container>
   );
 }
