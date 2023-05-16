@@ -60,17 +60,17 @@ function Profiles() {
   });
 
   // temp
-  useEffect(() => {
-   loading && console.log({
-    orderBy: {
-      key,
-      sort,
-    },
-    rows,
-    page,
-    searchString,
-  });
-  }, [loading, key, sort]);
+  // useEffect(() => {
+  //  loading && console.log({
+  //   orderBy: {
+  //     key,
+  //     sort,
+  //   },
+  //   rows,
+  //   page,
+  //   searchString,
+  // });
+  // }, [loading, key, sort]);
 
   // Handle error and show snack bar
   useEffect(() => {
