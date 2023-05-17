@@ -127,7 +127,7 @@ function Profiles() {
               variant="outlined"
               startIcon={<PersonAddAlt1Icon />}
               component={Link}
-              to="/profile/add"
+              to="/talent/add"
               sx={
                 {
                   // whiteSpace: "nowrap",
@@ -147,7 +147,7 @@ function Profiles() {
             variant="outlined"
             startIcon={<PersonAddAlt1Icon />}
             component={Link}
-            to="/profile/add"
+            to="/talent/add"
             sx={{ whiteSpace: "nowrap", flexShrink: 0, height: "100%" }}
           >
             Create Profile
