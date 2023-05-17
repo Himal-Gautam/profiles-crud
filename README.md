@@ -1,20 +1,12 @@
-To improve the appearance of your README file on GitHub, you can add the necessary tags and formatting. Here's an example of how you can structure your README file:
+# CRUD on Profiles
 
-# Project Title
-
-Briefly describe your project in one or two sentences.
+React.js application UI that allows CRUD operations on user profiles based on a Figma design. The application should allow the user to switch between themes (dark and light) and include pagination, sorting, and searching (with debounce) functionality
 
 ## Table of Contents
 
 - [Description](#description)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-
-## Description
-
-Provide a more detailed description of your project, including its purpose, features, and any relevant information.
 
 ## Installation
 
@@ -38,15 +30,6 @@ Provide a more detailed description of your project, including its purpose, feat
 
 2. Open your web browser and access the application at `http://localhost:3000`.
 
-## Contributing
-
-Explain how others can contribute to your project, including guidelines for submitting pull requests and reporting issues.
-
-## License
-
-Specify the license under which your project is distributed. For example:
-
-This project is licensed under the [MIT License](LICENSE).
 
 ## Folder Structure
 
@@ -73,9 +56,3 @@ This project is licensed under the [MIT License](LICENSE).
     └───GraphQL
         └───queries.js
 ```
-
-## Task Details
-
-Attach or provide a link to the task details document.
-
-Make sure to replace the relevant sections with your own project information and provide proper links or references where necessary. This structure will help organize the content of your README file and make it more visually appealing and user-friendly on GitHub.
