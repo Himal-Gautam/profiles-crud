@@ -147,7 +147,9 @@ function AddEditProfile({ mode }) {
                   onChange={(e) => setImageUrl(e.target.value)}
                   value={profileLoading ? "loading..." : imageUrl}
                   variant="outlined"
+                  type="url"
                   fullWidth
+                  required
                 />
               </Grid>
               <Grid item xs={6}>
@@ -159,6 +161,7 @@ function AddEditProfile({ mode }) {
                   value={profileLoading ? "loading..." : firstName}
                   variant="outlined"
                   fullWidth
+                  required
                 />
               </Grid>
               <Grid item xs={6}>
@@ -170,6 +173,7 @@ function AddEditProfile({ mode }) {
                   value={profileLoading ? "loading..." : lastName}
                   variant="outlined"
                   fullWidth
+                  required
                 />
               </Grid>
               <Grid item xs={12}>
@@ -180,7 +184,9 @@ function AddEditProfile({ mode }) {
                   onChange={(e) => setEmail(e.target.value)}
                   value={profileLoading ? "loading..." : email}
                   variant="outlined"
+ type="email"
                   fullWidth
+                  required
                 />
               </Grid>
               <Grid item xs={12}>
@@ -194,6 +200,7 @@ function AddEditProfile({ mode }) {
                   multiline
                   rows={4}
                   fullWidth
+                  required
                 />
               </Grid>
               <Grid item xs={12}>
